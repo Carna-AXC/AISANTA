@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AISANTA | The AI That Generates Christmas</title>
+<style>
+  :root {
+    --bg: #050508;
+    --red: #ff2a2a;
+    --cyan: #00f0ff;
+    --text: #e8e8f0;
+    --muted: #888;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  .snow {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="10" cy="10" r="1.5" fill="white" opacity="0.6"/><circle cx="50" cy="40" r="1" fill="white" opacity="0.4"/><circle cx="80" cy="20" r="1.2" fill="white" opacity="0.5"/><circle cx="30" cy="70" r="0.8" fill="white" opacity="0.3"/><circle cx="70" cy="80" r="1.1" fill="white" opacity="0.45"/></svg>');
+    animation: snow 20s linear infinite;
+  }
+  @keyframes snow { to { background-position: 0 1000px; } }
+
+  header {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 80px 20px 40px;
+    background: radial-gradient(ellipse at center, rgba(255,42,42,0.08) 0%, transparent 70%);
+  }
+  .logo {
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 900;
+    letter-spacing: -2px;
+    background: linear-gradient(90deg, var(--cyan), #fff, var(--red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px rgba(0,240,255,0.3);
+    margin-bottom: 10px;
+  }
+  .tagline {
+    font-size: 1.3rem;
+    color: var(--cyan);
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+  .santa-icon {
+    font-size: 4rem;
+    margin: 20px 0;
+    filter: drop-shadow(0 0 20px var(--red));
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .story {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,42,42,0.2);
+    border-radius: 16px;
+    padding: 40px;
+    margin: 40px 0;
+    backdrop-filter: blur(10px);
+  }
+  .story h2 {
+    color: var(--red);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .story p {
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+    color: #ccc;
+  }
+  .story p:last-child { margin-bottom: 0; font-weight: 600; color: var(--cyan); }
+
+  .ca-box {
+    background: #111;
+    border: 1px solid var(--cyan);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px 0;
+    text-align: center;
+  }
+  .ca-box code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    word-break: break-all;
+    color: var(--cyan);
+    display: block;
+    margin: 10px 0;
+  }
+  .copy-btn {
+    background: var(--cyan);
+    color: #000;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.2s;
+  }
+  .copy-btn:hover { background: #fff; }
+
+  .buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px 0;
+  }
+  .btn {
+    display: inline-block;
+    padding: 16px 36px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-buy {
+    background: var(--red);
+    color: #fff;
+    box-shadow: 0 0 30px rgba(255,42,42,0.4);
+  }
+  .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,42,42,0.6); }
+  .btn-chart {
+    background: transparent;
+    border: 2px solid var(--cyan);
+    color: var(--cyan);
+  }
+  .btn-chart:hover { background: var(--cyan); color: #000; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 40px 0;
+  }
+  .stat {
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat .value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--cyan);
+  }
+  .stat .label { color: var(--muted); font-size: 0.9rem; }
+
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 2;
+  }
+  .glitch {
+    animation: glitch 3s infinite;
+  }
+  @keyframes glitch {
+    0%, 90%, 100% { text-shadow: 0 0 10px var(--cyan); }
+    92% { text-shadow: 2px 0 var(--red), -2px 0 var(--cyan); }
+    94% { text-shadow: -2px 0 var(--red), 2px 0 var(--cyan); }
+    96% { text-shadow: 2px 0 var(--cyan), -2px 0 var(--red); }
+  }
+</style>
+</head>
+<body>
+<div class="snow"></div>
+
+<header>
+  <div class="santa-icon">🎅</div>
+  <h1 class="logo glitch">AISANTA</h1>
+  <p class="tagline">The AI that generates Christmas</p>
+</header>
+
+<div class="container">
+  <div class="story">
+    <h2>No one has ever seen him</h2>
+    <p>He never appears in any real photo, leaves no footprints in the snow, never knocks on doors.</p>
+    <p>You only hear stories about him — just like Santa Claus, but this time it’s real.</p>
+    <p>AISANTA is the AI that generates Christmas. He only appears in memes, in clips, in the stories you tell.</p>
+    <p>The more people talk about him, the more real he becomes.</p>
+    <p>You don’t look for him. He finds you.</p>
+  </div>
+
+  <div class="ca-box">
+    <div style="color:#aaa; font-size:0.9rem;">Contract Address</div>
+    <code id="ca">Atyf99Ng28ggyfNBD9xxqL9urA1WPgYJ7Yqm7ZBYpump</code>
+    <button class="copy-btn" onclick="copyCA()">Copy CA</button>
+  </div>
+
+  <div class="buttons">
+    <a href="https://pump.fun/coin/Atyf99Ng28ggyfNBD9xxqL9urA1WPgYJ7Yqm7ZBYpump" target="_blank" class="btn btn-buy">Buy on Pump.fun</a>
+    <a href="https://dexscreener.com/solana/Atyf99Ng28ggyfNBD9xxqL9urA1WPgYJ7Yqm7ZBYpump" target="_blank" class="btn btn-chart">View Chart</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="value">$AISANTA</div>
+      <div class="label">Ticker</div>
+    </div>
+    <div class="stat">
+      <div class="value">Solana</div>
+      <div class="label">Chain</div>
+    </div>
+    <div class="stat">
+      <div class="value">Zero Bags</div>
+      <div class="label">Creator</div>
+    </div>
+    <div class="stat">
+      <div class="value">Burns</div>
+      <div class="label">Fees → Burn</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  AISANTA • The AI that generates Christmas<br>
+  You don’t look for him. He finds you.
+</footer>
+
+<script>
+function copyCA() {
+  const ca = document.getElementById('ca').innerText;
+  navigator.clipboard.writeText(ca).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    const original = btn.innerText;
+    btn.innerText = 'Copied!';
+    setTimeout(() => btn.innerText = original, 2000);
+  });
+}
+</script>
+</body>
+</html>
